@@ -1,0 +1,48 @@
+#!/bin/bash
+
+if [[ $# == 1 ]]; then
+  prodDir=$1
+  randName=$RANDOM
+
+  echo "Getting the zip file..."
+  wget https://github.com/tommica/html5stripped/archive/master.zip -O "$randName.zip" -q
+
+  echo "Generating folders..."
+  unzip -qq "$randName.zip"
+  rm "$randName.zip"
+  mv html5stripped-master $prodDir
+  cd $prodDir
+
+  if hash sass 2>/dev/null; then
+    echo "Creating SCSS files"
+    mkdir "scss"
+    cd "scss"
+    printf "@import 'normalize.css';\n" >> "style.scss"
+    printf "@import 'helpers.css';\n" >> "style.scss"
+    
+    if hash bourbon 2>/dev/null; then
+      echo "Adding bourbon..."
+      bourbon install
+      printf "@import 'bourbon/bourbon';\n" >> "style.scss"
+
+      if hash neat 2>/dev/null; then
+        echo "Adding neat..."
+        neat install
+        printf "@import 'neat/neat';\n" >> "style.scss"
+      else
+        echo "Neat not enabled..."
+      fi
+    else
+      echo "Bourbon not enabled..."
+      echo "Neat not enabled..."
+    fi
+
+    sass style.scss:../css/style.css
+  else
+    echo "SASS does not exist..."
+    echo "Bourbon not enabled..."
+    echo "Neat not enabled..."
+  fi
+
+  echo "Finished!"
+fi
