@@ -19,6 +19,7 @@ if [[ $# == 1 ]]; then
     cd "scss"
     printf "@import 'normalize.css';\n" >> "style.scss"
     printf "@import 'helpers.css';\n" >> "style.scss"
+    printf "* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; *behavior: url(boxsizing.htc); }\n" >> "style.scss"
     
     if hash bourbon 2>/dev/null; then
       echo "Adding bourbon..."
