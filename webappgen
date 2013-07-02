@@ -14,22 +14,16 @@ if [[ $# == 1 ]]; then
   cd $prodDir
 
   if hash sass 2>/dev/null; then
-    echo "Creating SCSS files"
-    mkdir "scss"
-    cd "scss"
-    printf "@import 'normalize.css';\n" >> "style.scss"
-    printf "@import 'helpers.css';\n" >> "style.scss"
-    printf "* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; *behavior: url(boxsizing.htc); }\n" >> "style.scss"
-    
+    cd css/sass
     if hash bourbon 2>/dev/null; then
       echo "Adding bourbon..."
       bourbon install
-      printf "@import 'bourbon/bourbon';\n" >> "style.scss"
+      printf "@import 'bourbon/bourbon';\n" >> "ximports.scss"
 
       if hash neat 2>/dev/null; then
         echo "Adding neat..."
         neat install
-        printf "@import 'neat/neat';\n" >> "style.scss"
+        printf "@import 'neat/neat';\n" >> "ximports.scss"
       else
         echo "Neat not enabled..."
       fi
@@ -37,8 +31,9 @@ if [[ $# == 1 ]]; then
       echo "Bourbon not enabled..."
       echo "Neat not enabled..."
     fi
+    cd ../..
 
-    sass style.scss:../css/style.css
+    sass --style compressed css/sass/xcombined.scss:css/site.css
   else
     echo "SASS does not exist..."
     echo "Bourbon not enabled..."
@@ -46,5 +41,4 @@ if [[ $# == 1 ]]; then
   fi
 
   echo "Finished!"
-  echo "Remember to run npm install & grunt!"
 fi
