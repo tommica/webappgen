@@ -31,7 +31,7 @@ if [[ $# == 1 ]]; then
       cd ..
       # Install Compass
       echo "Installing Compass..."
-      compass create --sass-dir "sass" --css-dir "css" --javascripts-dir "scripts" --images-dir "images"
+      compass create --sass-dir "sass" --css-dir "css" --javascripts-dir "scripts" --images-dir "images" > /dev/null 2>&1
 
       # Move the SMACSS files to the sass directory
       mv css/sass sass/custom
@@ -47,7 +47,7 @@ if [[ $# == 1 ]]; then
       cd ../..
     fi
 
-    ./magic_watch 1
+    ./magic_watch 1 > /dev/null 2>&1
     echo "Compiling..."
   else
     echo "SASS does not exist..."
