@@ -20,31 +20,38 @@ if [[ $# == 1 ]]; then
   cd $prodDir
 
   if hash sass 2>/dev/null; then
-    cd css/sass
-    if hash bourbon 2>/dev/null; then
-      echo "Adding bourbon..."
-      bourbon install
-      printf "@import 'bourbon/bourbon';\n" >> "ximports.scss"
+    if hash compass 2>/dev/null; then
+      # Remove the base version of the base style
+      cd css/sass
+      rm base_1_bare.scss
+      mv base_1_compass.scss base_1.scss
+      # Remove normalizing, Compass has it's own
+      cd ..
+      rm normalize.css
+      cd ..
+      # Install Compass
+      echo "Installing Compass..."
+      compass create --sass-dir "sass" --css-dir "css" --javascripts-dir "scripts" --images-dir "images"
 
-      if hash neat 2>/dev/null; then
-        echo "Adding neat..."
-        neat install
-        printf "@import 'neat/neat';\n" >> "ximports.scss"
-      else
-        echo "Neat not enabled..."
-      fi
+      # Move the SMACSS files to the sass directory
+      mv css/sass sass/custom
+
+      # And link to it
+      printf "@import 'custom/xcombined';\n" >> "sass/screen.scss"
     else
-      echo "Bourbon not enabled..."
-      echo "Neat not enabled..."
+      # Remove the compass version of the base style
+      cd css/sass
+      rm base_1_compass.scss
+      mv base_1_bare.scss base_1.scss
+      echo "Compass not installed..."
+      cd ../..
     fi
-    cd ..
 
-    ./watch 1
-    echo "Compiling SASS..."
+    ./magic_watch 1
+    echo "Compiling..."
   else
     echo "SASS does not exist..."
-    echo "Bourbon not enabled..."
-    echo "Neat not enabled..."
+    echo "Compass not enabled..."
   fi
 
   cd ..
