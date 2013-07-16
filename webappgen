@@ -2,6 +2,12 @@
 
 if [[ $# == 1 ]]; then
   prodDir=$1
+  
+  if [ -d "$prodDir" ]; then
+    echo "Directory already exists!"
+    exit
+  fi
+  
   randName=$RANDOM
 
   echo "Getting the zip file..."
@@ -31,14 +37,16 @@ if [[ $# == 1 ]]; then
       echo "Bourbon not enabled..."
       echo "Neat not enabled..."
     fi
-    cd ../..
+    cd ..
 
-    sass --style compressed css/sass/xcombined.scss:css/site.css
+    ./watch 1
+    echo "Compiling SASS..."
   else
     echo "SASS does not exist..."
     echo "Bourbon not enabled..."
     echo "Neat not enabled..."
   fi
 
+  cd ..
   echo "Finished!"
 fi
