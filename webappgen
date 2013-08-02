@@ -21,30 +21,15 @@ if [[ $# == 1 ]]; then
 
   if hash sass 2>/dev/null; then
     if hash compass 2>/dev/null; then
-      # Remove the base version of the base style
-      cd css/sass
-      rm base_1_bare.scss
-      mv base_1_compass.scss base_1.scss
-      # Remove normalizing, Compass has it's own
-      cd ..
-      rm normalize.css
-      cd ..
       # Install Compass
       echo "Installing Compass..."
       compass create --sass-dir "sass" --css-dir "css" --javascripts-dir "scripts" --images-dir "images" > /dev/null 2>&1
 
-      # Move the SMACSS files to the sass directory
-      mv css/sass sass/custom
-
-      # And link to it
-      printf "@import 'custom/xcombined';\n" >> "sass/screen.scss"
+      # Add links to smacss files 
+      printf "@import 'smacss/variables';\n@import 'smacss/mixings';\n@import 'compass/reset';\n@import 'compass/utilities';\n@import 'blueprint';\n@import 'smacss/base';\n@import 'smacss/layout';\n@import 'smacss/module';\n@import 'smacss/state';\n@import 'smacss/theme';\n" > "sass/screen.scss"
     else
       # Remove the compass version of the base style
-      cd css/sass
-      rm base_1_compass.scss
-      mv base_1_bare.scss base_1.scss
       echo "Compass not installed..."
-      cd ../..
     fi
 
     ./magic_watch 1 > /dev/null 2>&1
@@ -54,6 +39,5 @@ if [[ $# == 1 ]]; then
     echo "Compass not enabled..."
   fi
 
-  cd ..
   echo "Finished!"
 fi
