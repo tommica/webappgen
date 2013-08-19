@@ -1,43 +1,49 @@
 #!/bin/bash
 
 if [[ $# == 1 ]]; then
-  prodDir=$1
-  
-  if [ -d "$prodDir" ]; then
-    echo "Directory already exists!"
-    exit
-  fi
-  
-  randName=$RANDOM
+    prodDir=$1
 
-  echo "Getting the zip file..."
-  wget https://github.com/tommica/html5stripped/archive/master.zip -O "$randName.zip" -q
-
-  echo "Generating folders..."
-  unzip -qq "$randName.zip"
-  rm "$randName.zip"
-  mv html5stripped-master $prodDir
-  cd $prodDir
-
-  if hash sass 2>/dev/null; then
-    if hash compass 2>/dev/null; then
-      # Install Compass
-      echo "Installing Compass..."
-      compass create --sass-dir "sass" --css-dir "css" --javascripts-dir "scripts" --images-dir "images" > /dev/null 2>&1
-
-      # Add links to smacss files 
-      printf "@import 'smacss/variables';\n@import 'smacss/mixings';\n@import 'compass/reset';\n@import 'compass/utilities';\n@import 'blueprint';\n@import 'smacss/base';\n@import 'smacss/layout';\n@import 'smacss/module';\n@import 'smacss/state';\n@import 'smacss/theme';\n" > "sass/screen.scss"
-    else
-      # Remove the compass version of the base style
-      echo "Compass not installed..."
+    if [ -d "$prodDir" ]; then
+        echo "Directory already exists!"
+        exit
     fi
 
-    ./magic_watch 1 > /dev/null 2>&1
-    echo "Compiling..."
-  else
-    echo "SASS does not exist..."
-    echo "Compass not enabled..."
-  fi
+    if hash sass 2>/dev/null; then
+        if hash compass 2>/dev/null; then
+            if hash npm 2>/dev/null; then
+                if hash grunt 2>/dev/null; then
+                    randName=$RANDOM
 
-  echo "Finished!"
+                    echo "Getting the zip file..."
+                    wget https://github.com/tommica/webapptemplate/archive/master.zip -O "$randName.zip" -q
+
+                    echo "Generating folders..."
+                    unzip -qq "$randName.zip"
+                    rm "$randName.zip"
+                    mv webapptemplate-master $prodDir
+                    cd $prodDir
+
+                    echo "Installing NPM packages..."
+                    npm install > /dev/null 2>&1
+
+                    echo "Initializing..."
+                    grunt init > /dev/null 2>&1
+                else
+                    echo "Please install GRUNT!"
+                    exit
+                fi
+            else
+                echo "Please install NODE and NPM!"
+                exit
+            fi
+        else 
+            echo "Please install COMPASS!"
+            exit
+        fi
+    else
+        echo "Please install SASS!"
+        exit
+    fi
+
+    echo "Finished!"
 fi
