@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [[ $# == 1 ]]; then
     prodDir=$1
 
@@ -6,9 +8,9 @@ if [[ $# == 1 ]]; then
         exit
     fi
 
-    if hash sass 2>/dev/null; then
-        if hash compass 2>/dev/null; then
-            if hash npm 2>/dev/null; then
+    if hash npm 2>/dev/null; then
+        if hash "less" 2>/dev/null; then
+            if hash recess 2>/dev/null; then
                 if hash grunt 2>/dev/null; then
                     if hash ender 2>/dev/null; then
                         randName=$RANDOM
@@ -25,9 +27,6 @@ if [[ $# == 1 ]]; then
                         echo "Installing NPM packages..."
                         npm install > /dev/null 2>&1
 
-                        echo "Building ENDERJS..."
-                        ender build jeesh --output scripts/vendor/ender > /dev/null 2>&1
-
                         echo "Initializing..."
                         grunt init > /dev/null 2>&1
                     else
@@ -39,15 +38,15 @@ if [[ $# == 1 ]]; then
                     exit
                 fi
             else
-                echo "Please install NODE and NPM!"
+                echo "Please install RECESS!"
                 exit
             fi
         else 
-            echo "Please install COMPASS!"
+            echo "Please install LESS!"
             exit
         fi
     else
-        echo "Please install SASS!"
+        echo "Please install NODE and NPM!"
         exit
     fi
 
