@@ -11,28 +11,22 @@ if [[ $# == 1 ]]; then
     if hash npm 2>/dev/null; then
         if hash "less" 2>/dev/null; then
             if hash recess 2>/dev/null; then
-                if hash grunt 2>/dev/null; then
-                    if hash ender 2>/dev/null; then
-                        randName=$RANDOM
-
-                        echo "Getting the zip file..."
-                        wget https://github.com/tommica/webapptemplate/archive/master.zip -O "$randName.zip" -q
-
-                        echo "Generating folders..."
-                        unzip -qq "$randName.zip"
-                        rm "$randName.zip"
-                        mv webapptemplate-master $prodDir
-                        cd $prodDir
-
-                        echo "Installing NPM packages..."
-                        npm install > /dev/null 2>&1
-
-                        echo "Initializing..."
-                        grunt init > /dev/null 2>&1
-                    else
-                        echo "Please install ENDER!"
-                        exit
-                    fi
+                    randName=$RANDOM
+    
+                    echo "Getting the zip file..."
+                    wget https://github.com/tommica/webapptemplate/archive/master.zip -O "$randName.zip" -q
+    
+                    echo "Generating folders..."
+                    unzip -qq "$randName.zip"
+                    rm "$randName.zip"
+                    mv webapptemplate-master $prodDir
+                    cd $prodDir
+    
+                    echo "Installing NPM packages..."
+                    npm install > /dev/null 2>&1
+    
+                    echo "Initializing..."
+                    grunt init > /dev/null 2>&1
                 else
                     echo "Please install GRUNT!"
                     exit
