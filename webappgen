@@ -11,6 +11,7 @@ if [[ $# == 1 ]]; then
     if hash npm 2>/dev/null; then
         if hash "less" 2>/dev/null; then
             if hash recess 2>/dev/null; then
+                if hash grunt 2>/dev/null; then
                     randName=$RANDOM
     
                     echo "Getting the zip file..."
