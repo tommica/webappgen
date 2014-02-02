@@ -22,6 +22,14 @@ if [[ $# == 1 ]]; then
                     rm "$randName.zip"
                     mv webapptemplate-master $prodDir
                     cd $prodDir
+                    
+                    echo "Fetching bootstrap..."
+                    cd "src/less"
+                    wget https://github.com/twbs/bootstrap/archive/master.zip -O "$randName.zip" -q
+                    unzip -qq "$randName.zip"
+                    rm "$randName.zip"
+                    mv bootstrap-master bootstrap
+                    cd "../.."
     
                     echo "Installing NPM packages..."
                     npm install > /dev/null 2>&1
